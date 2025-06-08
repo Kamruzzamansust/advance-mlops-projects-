@@ -1,0 +1,15 @@
+project:
+  name: titanic-mlops-project
+
+mounts:
+  - source: ./shared
+    target: /usr/local/airflow/shared
+
+
+deployments:
+  - name: dev
+    executor: celery
+    image:
+      name: quay.io/astronomer/astro-runtime:7.3.0
+    env: dev
+

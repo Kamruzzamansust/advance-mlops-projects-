@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: MLOPS-PROJECT-TITANIC
+Version: 0.1
+Author: Md Kamruzzaman
+Requires-Dist: pandas
+Requires-Dist: numpy
+Requires-Dist: sqlalchemy
+Requires-Dist: psycopg2-binary
+Requires-Dist: gspread
+Requires-Dist: oauth2client
+Requires-Dist: setuptools
+Requires-Dist: scikit-learn
+Requires-Dist: imbalanced-learn
+Requires-Dist: redis

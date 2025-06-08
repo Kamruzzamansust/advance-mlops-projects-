@@ -1,0 +1,16 @@
+# services:
+#   airflow:
+#     image: apache/airflow:2.7.0
+#     restart: always
+#     environment:
+#       - LOAD_EX=n
+#       - EXECUTOR=Local
+#     volumes:
+#       - ./dags:/usr/local/airflow/dags
+#       - ./plugins:/usr/local/airflow/plugins
+#       - ./logs:/usr/local/airflow/logs
+#       - ./custom_logs:/usr/local/airflow/custom_logs
+#       - ./shared:/usr/local/airflow/shared     # ✅ Mount for log_file and csv_output_path
+#     ports:
+#       - "8080:8080"
+#     command: webserver

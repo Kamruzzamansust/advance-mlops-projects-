@@ -1,0 +1,10 @@
+pandas
+numpy
+sqlalchemy 
+psycopg2-binary
+gspread
+oauth2client
+setuptools
+scikit-learn
+imbalanced-learn 
+redis

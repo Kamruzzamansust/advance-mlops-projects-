@@ -2,3 +2,4 @@
     remote = gdrive_remote
 ['remote "gdrive_remote"']
     url = gdrive://18wB_o5-hDl7NbkzuHVsn1Xk0L8XgqWpY
+    gdrive_acknowledge_abuse = true

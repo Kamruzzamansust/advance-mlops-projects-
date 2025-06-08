@@ -169,7 +169,11 @@ webserver_config.py
 airflow.cfg
 airflow.db
 ALL+MATERIALS+-+3/
-artifacts/
+# Ignore the actual data files and directories within 'artifacts/'
+artifacts/*
+
+# EXCEPTION: Do NOT ignore DVC metadata files (.dvc files) within 'artifacts/'
+!artifacts/**/*.dvc
 Dataset/
 logs/
 cred.txt

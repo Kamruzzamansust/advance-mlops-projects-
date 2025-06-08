@@ -2,6 +2,7 @@ Metadata-Version: 2.1
 Name: MLOPS-PROJECT-TITANIC
 Version: 0.1
 Author: Md Kamruzzaman
+License-File: LICENSE
 Requires-Dist: pandas
 Requires-Dist: numpy
 Requires-Dist: sqlalchemy

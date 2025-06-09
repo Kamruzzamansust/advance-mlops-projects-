@@ -177,3 +177,4 @@ artifacts/*
 Dataset/
 logs/
 cred.txt
+/artifacts

@@ -178,3 +178,4 @@ Dataset/
 logs/
 cred.txt
 /artifacts
+dvc.json

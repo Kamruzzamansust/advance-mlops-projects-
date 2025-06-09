@@ -1,0 +1,69 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python src/data_ingestion.py
+    deps:
+    - path: config/database_config.py
+      hash: md5
+      md5: 990565b652d81b38e68715ab99d786e3
+      size: 132
+    - path: config/paths_config.py
+      hash: md5
+      md5: dd986955badf80fdb27a59249ab93c34
+      size: 183
+    - path: src/data_ingestion.py
+      hash: md5
+      md5: a9d8de2b57145343435c7a506687ed74
+      size: 2425
+    outs:
+    - path: artifacts/raw/titanic_test.csv
+      hash: md5
+      md5: 4b6fa4d5485990373b22f06e92cc4156
+      size: 12106
+    - path: artifacts/raw/titanic_train.csv
+      hash: md5
+      md5: e8aca5f1791d9b5a5549673c973b2478
+      size: 48423
+  data_processing:
+    cmd: python src/data_processing.py
+    deps:
+    - path: artifacts/raw/titanic_test.csv
+      hash: md5
+      md5: 4b6fa4d5485990373b22f06e92cc4156
+      size: 12106
+    - path: artifacts/raw/titanic_train.csv
+      hash: md5
+      md5: e8aca5f1791d9b5a5549673c973b2478
+      size: 48423
+    - path: config/paths_config.py
+      hash: md5
+      md5: dd986955badf80fdb27a59249ab93c34
+      size: 183
+    - path: src/data_processing.py
+      hash: md5
+      md5: 6a2dc149af8e530be165bf6cd6fb3d5e
+      size: 5172
+    - path: src/feature_store.py
+      hash: md5
+      md5: 623dd605ab53797de39a4fba84a6eee4
+      size: 1233
+  model_training:
+    cmd: python src/model_training.py
+    deps:
+    - path: config/paths_config.py
+      hash: md5
+      md5: dd986955badf80fdb27a59249ab93c34
+      size: 183
+    - path: src/feature_store.py
+      hash: md5
+      md5: 623dd605ab53797de39a4fba84a6eee4
+      size: 1233
+    - path: src/model_training.py
+      hash: md5
+      md5: d433a4d2470f9aa320999d7ce6dff7c7
+      size: 4733
+    outs:
+    - path: artifacts/models/random_forest_model.pkl
+      hash: md5
+      md5: a23c0080ecefa7277af6476ac117ec83
+      size: 2361240

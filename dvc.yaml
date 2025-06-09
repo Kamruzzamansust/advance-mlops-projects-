@@ -1,0 +1,30 @@
+stages:
+  data_ingestion:
+    cmd: python src/data_ingestion.py
+    deps:
+      - src/data_ingestion.py
+      - config/database_config.py
+      - config/paths_config.py
+    outs:
+      - artifacts/raw/titanic_train.csv
+      - artifacts/raw/titanic_test.csv
+
+  data_processing:
+    cmd: python src/data_processing.py
+    deps:
+      - src/data_processing.py
+      - artifacts/raw/titanic_train.csv
+      - artifacts/raw/titanic_test.csv
+      - src/feature_store.py
+      - config/paths_config.py
+    params: []
+    outs: []  # No output files; uses Redis for feature storage
+
+  model_training:
+    cmd: python src/model_training.py
+    deps:
+      - src/model_training.py
+      - src/feature_store.py
+      - config/paths_config.py
+    outs:
+      - artifacts/models/random_forest_model.pkl

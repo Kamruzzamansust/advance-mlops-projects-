@@ -3,3 +3,5 @@
 ['remote "gdrive_remote"']
     url = gdrive://18wB_o5-hDl7NbkzuHVsn1Xk0L8XgqWpY
     gdrive_acknowledge_abuse = true
+    gdrive_use_service_account = true
+    gdrive_service_account_json_file_path = /home/kamruzaman/Learning/titanic_mlops_projects/dvc.json

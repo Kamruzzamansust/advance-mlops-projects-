@@ -18,23 +18,23 @@ stages:
     outs:
     - path: artifacts/raw/titanic_test.csv
       hash: md5
-      md5: 4b6fa4d5485990373b22f06e92cc4156
-      size: 12106
+      md5: e4e31a0ab9b239b02e828cbcbcc401bb
+      size: 12142
     - path: artifacts/raw/titanic_train.csv
       hash: md5
-      md5: e8aca5f1791d9b5a5549673c973b2478
-      size: 48423
+      md5: 19d7d2221eb9976a8db1364e86155832
+      size: 48432
   data_processing:
     cmd: python src/data_processing.py
     deps:
     - path: artifacts/raw/titanic_test.csv
       hash: md5
-      md5: 4b6fa4d5485990373b22f06e92cc4156
-      size: 12106
+      md5: e4e31a0ab9b239b02e828cbcbcc401bb
+      size: 12142
     - path: artifacts/raw/titanic_train.csv
       hash: md5
-      md5: e8aca5f1791d9b5a5549673c973b2478
-      size: 48423
+      md5: 19d7d2221eb9976a8db1364e86155832
+      size: 48432
     - path: config/paths_config.py
       hash: md5
       md5: dd986955badf80fdb27a59249ab93c34

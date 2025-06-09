@@ -6,6 +6,7 @@ from src.logger import get_logger
 from src.custom_exception import CustomException
 from config.paths_config import *
 import sys
+from sklearn.impute import SimpleImputer
 logger = get_logger(__name__)
 
 
@@ -68,43 +69,50 @@ class DataProcessing:
     
     def handle_imbalance_data(self):
         try:
+            # Select features and target
             X = self.data[['pclass', 'sex', 'age', 'fare', 'embarked', 'familysize', 'islaone', 'hascabin', 'title', 'pclass_fare', 'age_fare']]
             y = self.data['survived']
 
+            # Impute missing values
+            imputer = SimpleImputer(strategy='mean')  # You can choose 'median' or 'most_frequent' based on your data
+            X_imputed = imputer.fit_transform(X)
+
+            # Apply SMOTE
             smote = SMOTE(random_state=42)
-            self.X_resampled, self.y_resampled = smote.fit_resample(X, y)
+            self.X_resampled, self.y_resampled = smote.fit_resample(X_imputed, y)
 
-            logger.info("Hanled imbalance data sucesfully...")
+            logger.info("Handled imbalance data successfully...")
 
         except Exception as e:
-            logger.error(f"Error while imabalanced handling data {e}")
+            logger.error(f"Error while handling imbalanced data: {e}")
             raise CustomException(str(e))
-    
+
+        
     def store_feature_in_redis(self):
-        try:
-            batch_data = {}
-            for idx,row in self.data.iterrows():
-                entity_id = row["passengerid"]
-                features = {
-                    "age" : row['age'],
-                    "fare" : row["fare"],
-                    "pclass" : row["pclass"],
-                    "sex" : row["sex"],
-                    "embarked" : row["embarked"],
-                    "familysize": row["familysize"],
-                    "islaone" : row["islaone"],
-                    "hascabin" : row["hascabin"],
-                    "title" : row["title"],
-                    "pclass_fare" : row["pclass_fare"],
-                    "age_fare" : row["age_fare"],
-                    "survived" : row["survived"]
-                }
-                batch_data[entity_id] = features
-            self.feature_store.store_batch_features(batch_data)
-            logger.info("Data has been feeded into Feature Store..")
-        except Exception as e:
-            logger.error(f"Error while feature storing data {e}")
-            raise CustomException(str(e),sys)
+            try:
+                batch_data = {}
+                for idx,row in self.data.iterrows():
+                    entity_id = row["passengerid"]
+                    features = {
+                        "age" : row['age'],
+                        "fare" : row["fare"],
+                        "pclass" : row["pclass"],
+                        "sex" : row["sex"],
+                        "embarked" : row["embarked"],
+                        "familysize": row["familysize"],
+                        "islaone" : row["islaone"],
+                        "hascabin" : row["hascabin"],
+                        "title" : row["title"],
+                        "pclass_fare" : row["pclass_fare"],
+                        "age_fare" : row["age_fare"],
+                        "survived" : row["survived"]
+                    }
+                    batch_data[entity_id] = features
+                self.feature_store.store_batch_features(batch_data)
+                logger.info("Data has been feeded into Feature Store..")
+            except Exception as e:
+                logger.error(f"Error while feature storing data {e}")
+                raise CustomException(str(e),sys)
         
     def retrive_feature_redis_store(self,entity_id):
         features = self.feature_store.get_features(entity_id)

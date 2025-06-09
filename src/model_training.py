@@ -8,6 +8,8 @@ import os
 import pickle
 from sklearn.metrics import accuracy_score
 import sys
+from sklearn.impute import SimpleImputer
+
 logger = get_logger(__name__)
 
 class ModelTraining:
@@ -36,11 +38,13 @@ class ModelTraining:
             logger.error(f"Error while loading data from Redis {e}")
             raise CustomException(str(e),sys)
         
+    from sklearn.impute import SimpleImputer
+
     def prepare_data(self):
         try:
             entity_ids = self.feature_store.get_all_entity_ids()
 
-            train_entity_ids , test_entity_ids = train_test_split(entity_ids , test_size=0.2 , random_state=42)
+            train_entity_ids, test_entity_ids = train_test_split(entity_ids, test_size=0.2, random_state=42)
 
             train_data = self.load_data_from_redis(train_entity_ids)
             test_data = self.load_data_from_redis(test_entity_ids)
@@ -48,18 +52,23 @@ class ModelTraining:
             train_df = pd.DataFrame(train_data)
             test_df = pd.DataFrame(test_data)
 
-            X_train = train_df.drop('survived',axis=1)
-            logger.info(X_train.columns)
-            X_test = test_df.drop('survived',axis=1)
+            X_train = train_df.drop('survived', axis=1)
+            X_test = test_df.drop('survived', axis=1)
             y_train = train_df["survived"]
             y_test = test_df["survived"]
 
+            # Impute missing values
+            imputer = SimpleImputer(strategy='mean')
+            X_train_imputed = imputer.fit_transform(X_train)
+            X_test_imputed = imputer.transform(X_test)
+
             logger.info("Preparation for Model Training completed")
-            return X_train , X_test , y_train, y_test
-        
+            return X_train_imputed, X_test_imputed, y_train, y_test
+
         except Exception as e:
             logger.error(f"Error while preparing data {e}")
-            raise CustomException(str(e),sys)
+            raise CustomException(str(e), sys)
+
         
     def hyperparamter_tuning(self,X_train,y_train):
         try:

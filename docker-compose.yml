@@ -1,16 +1,37 @@
-# services:
-#   airflow:
-#     image: apache/airflow:2.7.0
-#     restart: always
-#     environment:
-#       - LOAD_EX=n
-#       - EXECUTOR=Local
-#     volumes:
-#       - ./dags:/usr/local/airflow/dags
-#       - ./plugins:/usr/local/airflow/plugins
-#       - ./logs:/usr/local/airflow/logs
-#       - ./custom_logs:/usr/local/airflow/custom_logs
-#       - ./shared:/usr/local/airflow/shared     # ✅ Mount for log_file and csv_output_path
-#     ports:
-#       - "8080:8080"
-#     command: webserver
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "90:90"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - backend1
+      - backend2
+
+  backend1:
+    build: ./backend
+    container_name: backend1
+    ports:
+      - "8001:8000"
+    restart: always
+    volumes:
+      - ./artifacts/models/random_forest_model.pkl:/app/artifacts/models/random_forest_model.pkl
+
+  backend2:
+    build: ./backend
+    container_name: backend2
+    ports:
+      - "8002:8000"
+    restart: always
+    volumes:
+      - ./artifacts/models/random_forest_model.pkl:/app/artifacts/models/random_forest_model.pkl
+
+  frontend:
+    build: ./frontend
+    container_name: frontend_titanic
+    ports:
+      - "8501:8501"
+    restart: always
